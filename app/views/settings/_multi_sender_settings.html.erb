@@ -1,0 +1,113 @@
+<style type="text/css">
+  span{
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+    -webkit-appearance: button;
+    cursor: pointer;
+    background-color: #fff;
+    height: 28px;
+    -webkit-transition: background-color 100ms linear;
+    -moz-transition: background-color 100ms linear;
+    -o-transition: background-color 100ms linear;
+    transition: background-color 100ms linear;
+    padding: 5px;
+  }
+</style>
+<fieldset>
+  <legend>Custom Field Name</legend>
+  <p>
+    <label for="custom_field_name">Custom Field Name</label>
+    <%= text_field_tag 'settings[custom_field_name]',Setting.plugin_redmine_multi_sender['custom_field_name'].to_s %>
+  </p>
+</fieldset>
+
+<fieldset>
+  <legend>Create new Configuration</legend>
+  <p>
+    <label for="configurations">Configuration Name</label>
+    <%= text_field_tag 'settings[configurations_name]' %>
+    <%= hidden_field_tag 'settings[configurations]', Setting.plugin_redmine_multi_sender['configurations'].to_s %>
+    <span onclick="CreateNewConf()">Create</span>
+  </p>
+</fieldset>
+
+<fieldset style="display:none;" id="create_conf_block">
+	<legend id="conf_name">alberon</legend>
+  <p>
+    <label for="alberon_host">Host</label>
+    <%= text_field_tag 'settings[alberon_host]','', {id: 'host_tag'} %>
+  </p>
+  <p>
+    <label for="alberon_from_email">From Email</label>
+    <%= text_field_tag 'settings[alberon_from_email]','', {id: 'from_email_tag'} %>
+  </p>
+  <p>
+    <label for="alberon_domain">Domain</label>
+    <%= text_field_tag 'settings[alberon_domain]','', {id: 'domain_tag'} %>
+  </p>
+  <p>
+    <label for="alberon_password">Password</label>
+    <%= password_field_tag 'settings[alberon_password]','', {id: 'password_tag'} %>
+  </p>
+</fieldset>
+
+<% configurations = Setting.plugin_redmine_multi_sender['configurations'] ? Setting.plugin_redmine_multi_sender['configurations'].split(',').compact.uniq : []
+   configurations.each_with_index do |conf, index|
+    next if conf.blank?
+    if Setting.plugin_redmine_multi_sender["#{conf}_host"].present? || Setting.plugin_redmine_multi_sender["#{conf}_from_email"].present? ||
+       Setting.plugin_redmine_multi_sender["#{conf}_domain"].present? || Setting.plugin_redmine_multi_sender["#{conf}_password"].present?
+%>
+
+<fieldset id="conf_<%= index %>">
+  <legend><%= conf %></legend>
+  <p>
+    <label for="<%= conf %>_host">Host</label>
+    <%= text_field_tag "settings[#{conf}_host]", Setting.plugin_redmine_multi_sender["#{conf}_host"].to_s %>
+  </p>
+  <p>
+    <label for="<%= conf %>_from_email">From Email</label>
+    <%= text_field_tag "settings[#{conf}_from_email]", Setting.plugin_redmine_multi_sender["#{conf}_from_email"].to_s %>
+  </p>
+  <p>
+    <label for="<%= conf %>_domain">Domain</label>
+    <%= text_field_tag "settings[#{conf}_domain]", Setting.plugin_redmine_multi_sender["#{conf}_domain"].to_s %>
+  </p>
+  <p>
+    <label for="<%= conf %>_password">Password</label>
+    <%= password_field_tag "settings[#{conf}_password]", Setting.plugin_redmine_multi_sender["#{conf}_password"].to_s %>
+  </p>
+  <legend><a href="#" onclick="RemoveConf('<%= index %>');">Remove</a></legend>
+</fieldset>
+<% end %>
+<% end %>
+
+
+
+<script type="text/javascript">
+  function CreateNewConf(){
+    if($("#settings_configurations_name").val() == ''){
+      alert("Configuration name cannot be empty");
+    }else{
+      cnf_name = $("#settings_configurations_name").val();
+      $("#host_tag").attr('name', 'settings['+cnf_name+'_host]');
+      $("#from_email_tag").attr('name', 'settings['+cnf_name+'_from_email]');
+      $("#domain_tag").attr('name', 'settings['+cnf_name+'_domain]');
+      $("#username_tag").attr('name', 'settings['+cnf_name+'_username]');
+      $("#password_tag").attr('name', 'settings['+cnf_name+'_password]');
+      $("#create_conf_block").show();
+      $("#conf_name").text($("#settings_configurations_name").val());
+      //$("#settings_configurations_").attr('readonly', true);
+      var conf_value = $("#settings_configurations").val();
+      $("#settings_configurations").val(conf_value+ ',' + cnf_name);
+    }
+  }
+  function RemoveConf(id){
+    var a = confirm("Are you sure want to remove?");
+    if(a){
+      $('#conf_'+id).remove();
+    }
+  }
+</script>
