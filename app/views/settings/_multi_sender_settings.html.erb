@@ -35,13 +35,17 @@
 </fieldset>
 
 <fieldset style="display:none;" id="create_conf_block">
-	<legend id="conf_name">alberon</legend>
+  <legend id="conf_name">alberon</legend>
   <p>
     <label for="alberon_host">Host</label>
     <%= text_field_tag 'settings[alberon_host]','', {id: 'host_tag'} %>
   </p>
   <p>
-    <label for="alberon_from_email">From Email</label>
+    <label for="alberon_port">Port</label>
+    <%= text_field_tag 'settings[alberon_port]','', {id: 'port_tag'} %>
+  </p>
+  <p>
+    <label for="alberon_from_email">Username</label>
     <%= text_field_tag 'settings[alberon_from_email]','', {id: 'from_email_tag'} %>
   </p>
   <p>
@@ -51,6 +55,23 @@
   <p>
     <label for="alberon_password">Password</label>
     <%= password_field_tag 'settings[alberon_password]','', {id: 'password_tag'} %>
+  </p>
+  <p>
+    <label for="alberon_service_provider">Service Provider</label>
+    <%= text_field_tag 'settings[alberon_service_provider]','', {id: 'service_provider',pattern: "(gmail)|(office365)"} %>
+    <em>possible values: gmail,office</em>
+  </p>
+  <p>
+    <label for="alberon_client_id">Client ID</label>
+    <%= text_field_tag 'settings[alberon_client_id]','', {id: 'client_id'} %>
+  </p>
+  <p>
+    <label for="alberon_client_secret">Client Secret</label>
+    <%= text_field_tag 'settings[alberon_client_secret]','', {id: 'client_secret'} %>
+  </p>
+  <p>
+    <label for="alberon_tenant_id">Tenant ID</label>
+    <%= text_field_tag 'settings[alberon_tenant_id]','', {id: 'tenant_id'} %>
   </p>
 </fieldset>
 
@@ -68,7 +89,11 @@
     <%= text_field_tag "settings[#{conf}_host]", Setting.plugin_redmine_multi_sender["#{conf}_host"].to_s %>
   </p>
   <p>
-    <label for="<%= conf %>_from_email">From Email</label>
+    <label for="<%= conf %>_from_email">Port</label>
+    <%= text_field_tag "settings[#{conf}_port]", Setting.plugin_redmine_multi_sender["#{conf}_port"].to_s %>
+  </p>
+  <p>
+    <label for="<%= conf %>_from_email">Username</label>
     <%= text_field_tag "settings[#{conf}_from_email]", Setting.plugin_redmine_multi_sender["#{conf}_from_email"].to_s %>
   </p>
   <p>
@@ -79,10 +104,68 @@
     <label for="<%= conf %>_password">Password</label>
     <%= password_field_tag "settings[#{conf}_password]", Setting.plugin_redmine_multi_sender["#{conf}_password"].to_s %>
   </p>
+  <p>
+    <label for="<%= conf %>_service_provider">Service Provider</label>
+    <%= text_field_tag "settings[#{conf}_service_provider]", Setting.plugin_redmine_multi_sender["#{conf}_service_provider"].to_s, pattern: "(gmail)|(office365)" %>
+    <em>possible values: gmail,office365</em>
+  </p>
+  <p>
+    <label for="<%= conf %>_client_id">Client ID</label>
+    <%= text_field_tag "settings[#{conf}_client_id]", Setting.plugin_redmine_multi_sender["#{conf}_client_id"].to_s %>
+  </p>
+  <p>
+    <label for="<%= conf %>_client_secret">Client Secret</label>
+    <%= text_field_tag "settings[#{conf}_client_secret]", Setting.plugin_redmine_multi_sender["#{conf}_client_secret"].to_s %>
+  </p>
+  <p>
+    <label for="<%= conf %>_tenant_id">Tenant ID</label>
+    <%= text_field_tag "settings[#{conf}_tenant_id]", Setting.plugin_redmine_multi_sender["#{conf}_tenant_id"].to_s %>
+  </p>
   <legend><a href="#" onclick="RemoveConf('<%= index %>');">Remove</a></legend>
 </fieldset>
 <% end %>
 <% end %>
+
+<fieldset>
+  <legend>Default</legend>
+  <p>
+    <label for="default_host">Host</label>
+    <%= text_field_tag 'settings[default_host]',Setting.plugin_redmine_multi_sender["default_host"].to_s %>
+  </p>
+  <p>
+    <label for="default_port">Port</label>
+    <%= text_field_tag 'settings[default_port]',Setting.plugin_redmine_multi_sender["default_port"].to_s %>
+  </p>
+  <p>
+    <label for="default_from_email">Username</label>
+    <%= text_field_tag 'settings[default_from_email]',Setting.plugin_redmine_multi_sender["default_from_email"].to_s %>
+  </p>
+  <p>
+    <label for="default_password">Password</label>
+    <%= password_field_tag 'settings[default_password]',Setting.plugin_redmine_multi_sender["default_password"].to_s %>
+  </p>
+  <p>
+    <label for="default_domain">Domain</label>
+    <%= text_field_tag 'settings[default_domain]',Setting.plugin_redmine_multi_sender["default_domain"].to_s %>
+  </p>
+  <p>
+    <label for="default_service_provider">Service Provider</label>
+    <%= text_field_tag 'settings[default_service_provider]',Setting.plugin_redmine_multi_sender["default_service_provider"].to_s, pattern: "(gmail)|(office365)" %>
+    <em>possible values: gmail,office365</em>
+  </p>
+  <p>
+    <label for="default_domain">Client ID</label>
+    <%= text_field_tag 'settings[default_client_id]',Setting.plugin_redmine_multi_sender["default_client_id"].to_s %>
+  </p>
+  <p>
+    <label for="default_domain">Client Secret</label>
+    <%= text_field_tag 'settings[default_client_secret]',Setting.plugin_redmine_multi_sender["default_client_secret"].to_s %>
+  </p>
+  <p>
+    <label for="default_domain">Tenant ID</label>
+    <%= text_field_tag 'settings[default_tenant_id]',Setting.plugin_redmine_multi_sender["default_tenant_id"].to_s %>
+  </p>
+</fieldset>
 
 
 
@@ -95,8 +178,13 @@
       $("#host_tag").attr('name', 'settings['+cnf_name+'_host]');
       $("#from_email_tag").attr('name', 'settings['+cnf_name+'_from_email]');
       $("#domain_tag").attr('name', 'settings['+cnf_name+'_domain]');
+      $("#port_tag").attr('name', 'settings['+cnf_name+'_port]');
       $("#username_tag").attr('name', 'settings['+cnf_name+'_username]');
       $("#password_tag").attr('name', 'settings['+cnf_name+'_password]');
+      $("#service_provider").attr('name', 'settings['+cnf_name+'_service_provider]');
+      $("#client_id").attr('name', 'settings['+cnf_name+'_client_id]');
+      $("#client_secret").attr('name', 'settings['+cnf_name+'_client_secret]');
+      $("#tenant_id").attr('name', 'settings['+cnf_name+'_tenant_id]');
       $("#create_conf_block").show();
       $("#conf_name").text($("#settings_configurations_name").val());
       //$("#settings_configurations_").attr('readonly', true);

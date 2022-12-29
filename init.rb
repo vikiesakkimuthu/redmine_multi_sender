@@ -1,6 +1,7 @@
 require 'redmine'
 $LOAD_PATH.unshift "#{File.dirname(__FILE__)}/lib/"
 require 'multi_sender_mailer_patch'
+require 'multi_sender_smtp_patch'
 
 Redmine::Plugin.register :redmine_multi_sender do
   name 'Redmine Multi Sender plugin'
