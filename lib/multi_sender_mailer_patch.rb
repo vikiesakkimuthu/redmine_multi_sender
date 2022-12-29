@@ -29,8 +29,9 @@ module MultiSenderMailerPatch
                        password: token,
                        domain: domain,
                        address: host,
+                       authentication: :xoauth2,
                        port: port }
-      delivery_options[:xauth] = false if token.blank?
+      Setting.mail_from = user_name
       self.smtp_settings.merge!(delivery_options)
       mail_without_helpdesk(headers, &block)
     end      
