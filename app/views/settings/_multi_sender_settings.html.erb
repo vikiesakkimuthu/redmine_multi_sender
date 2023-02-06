@@ -73,6 +73,10 @@
     <label for="alberon_tenant_id">Tenant ID</label>
     <%= text_field_tag 'settings[alberon_tenant_id]','', {id: 'tenant_id'} %>
   </p>
+  <p>
+    <label for="alberon_refresh_token">Refresh Token</label>
+    <%= text_field_tag 'settings[alberon_refresh_token]','', {id: 'refresh_token'} %>
+  </p>
 </fieldset>
 
 <% configurations = Setting.plugin_redmine_multi_sender['configurations'] ? Setting.plugin_redmine_multi_sender['configurations'].split(',').compact.uniq : []
@@ -121,6 +125,10 @@
     <label for="<%= conf %>_tenant_id">Tenant ID</label>
     <%= text_field_tag "settings[#{conf}_tenant_id]", Setting.plugin_redmine_multi_sender["#{conf}_tenant_id"].to_s %>
   </p>
+  <p>
+    <label for="<%= conf %>_refresh_token">Refresh Token</label>
+    <%= text_field_tag "settings[#{conf}_refresh_token]", Setting.plugin_redmine_multi_sender["#{conf}_refresh_token"].to_s %>
+  </p>
   <legend><a href="#" onclick="RemoveConf('<%= index %>');">Remove</a></legend>
 </fieldset>
 <% end %>
@@ -165,6 +173,10 @@
     <label for="default_domain">Tenant ID</label>
     <%= text_field_tag 'settings[default_tenant_id]',Setting.plugin_redmine_multi_sender["default_tenant_id"].to_s %>
   </p>
+  <p>
+    <label for="default_refresh_token">Refresh Token</label>
+    <%= text_field_tag "settings[default_refresh_token]", Setting.plugin_redmine_multi_sender["default_refresh_token"].to_s %>
+  </p>
 </fieldset>
 
 
@@ -185,6 +197,7 @@
       $("#client_id").attr('name', 'settings['+cnf_name+'_client_id]');
       $("#client_secret").attr('name', 'settings['+cnf_name+'_client_secret]');
       $("#tenant_id").attr('name', 'settings['+cnf_name+'_tenant_id]');
+      $("#refresh_token").attr('name', 'settings['+cnf_name+'_refresh_token]');
       $("#create_conf_block").show();
       $("#conf_name").text($("#settings_configurations_name").val());
       //$("#settings_configurations_").attr('readonly', true);

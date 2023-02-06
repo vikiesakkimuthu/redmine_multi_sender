@@ -45,5 +45,26 @@ class EmailSender
         # rescue
         # 	return nil
       	end
+
+      	def fetch_gmail_token!(sender_type, scope_type = 'email')
+        	client_id = Setting.plugin_redmine_multi_sender["#{sender_type}_client_id"]
+        	client_secret = Setting.plugin_redmine_multi_sender["#{sender_type}_client_secret"]
+        	ref_token =  Setting.plugin_redmine_multi_sender["#{sender_type}_refresh_token"]
+        	# tenant_id = Setting.plugin_redmine_multi_sender["#{sender_type}_tenant_id"]
+        	# from_email = Setting.plugin_redmine_multi_sender["#{sender_type}_from_email"]
+        	# password = Setting.plugin_redmine_multi_sender["#{sender_type}_password"]
+        	# scope = scope_type == 'email' ? "https://outlook.office.com/SMTP.Send" : "https://outlook.office.com/IMAP.AccessAsUser.All"
+        	# scope = scope_type == 'email' ? "https://outlook.office.com/SMTP.Send" : "https://outlook.office.com/SMTP.Send"
+        	form_params = {:client_id=> client_id, access_type: 'offline', :client_secret=> client_secret, refresh_token: ref_token, :grant_type=>"refresh_token"}
+        	url = URI("https://accounts.google.com/o/oauth2/token")
+    		resp = Net::HTTP.post_form(url, form_params)
+        	res_hash = JSON.parse(resp.body)
+        	if res_hash.present? && res_hash['access_token'].present?
+        		return res_hash['access_token']
+        	end
+        	return nil
+        # rescue
+        # 	return nil
+      	end
 	end
 end

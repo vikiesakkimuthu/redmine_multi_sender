@@ -24,15 +24,16 @@ module MultiSenderMailerPatch
       domain = Setting.plugin_redmine_multi_sender["#{email_sender}_domain"]
       host = Setting.plugin_redmine_multi_sender["#{email_sender}_host"]
       port = Setting.plugin_redmine_multi_sender["#{email_sender}_port"]
-
-      delivery_options = { user_name: user_name,
-                       password: token,
-                       domain: domain,
-                       address: host,
-                       authentication: :xoauth2,
-                       port: port }
-      Setting.mail_from = user_name
-      self.smtp_settings.merge!(delivery_options)
+      if token.present?
+        delivery_options = { user_name: user_name,
+                         password: token,
+                         domain: domain,
+                         address: host,
+                         authentication: :xoauth2,
+                         port: port }
+        Setting.mail_from = user_name
+        self.smtp_settings.merge!(delivery_options)
+      end
       mail_without_helpdesk(headers, &block)
     end      
   end # module InstanceMethods
