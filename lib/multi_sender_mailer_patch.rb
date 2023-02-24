@@ -21,6 +21,7 @@ module MultiSenderMailerPatch
       if project.present? && sender_custom_field.present? && project.custom_field_value(sender_custom_field).present?
          email_sender = project.custom_field_value(sender_custom_field)
       end
+      Rails.logger.info "email_sender_name #{email_sender} Container #{container.class} - #{container.id} project #{project.id} - #{project.name} "
       user_name = Setting.plugin_redmine_multi_sender["#{email_sender}_from_email"]
       smtp_api_access_token =  EmailSender.fetch_access_token!(email_sender, 'email')
       domain = Setting.plugin_redmine_multi_sender["#{email_sender}_domain"]
