@@ -14,10 +14,12 @@ module MultiSenderMailerPatch
 
       container = @issue || @news || @wiki_content || @message || @document || @attachments.try(:first)
       project = container.try(:project)
+      Rails.logger.info "Container #{container.class} - #{container.id} project #{project.id} - #{project.name} "
       sender_name = Setting.plugin_redmine_multi_sender["custom_field_name"]
       email_sender = "default"
-      if project.present? && project.custom_field_value(CustomField.find_by_name(sender_name)).present?
-         email_sender = project.custom_field_value(CustomField.find_by_name(sender_name))
+      sender_custom_field = CustomField.where(type: "ProjectCustomField", name: sender_name).first
+      if project.present? && sender_custom_field.present? && project.custom_field_value(sender_custom_field).present?
+         email_sender = project.custom_field_value(sender_custom_field)
       end
       user_name = Setting.plugin_redmine_multi_sender["#{email_sender}_from_email"]
       token =  EmailSender.fetch_access_token!(email_sender, 'email')
