@@ -22,13 +22,13 @@ module MultiSenderMailerPatch
          email_sender = project.custom_field_value(sender_custom_field)
       end
       user_name = Setting.plugin_redmine_multi_sender["#{email_sender}_from_email"]
-      access_token =  EmailSender.fetch_access_token!(email_sender, 'email')
+      smtp_api_access_token =  EmailSender.fetch_access_token!(email_sender, 'email')
       domain = Setting.plugin_redmine_multi_sender["#{email_sender}_domain"]
       host = Setting.plugin_redmine_multi_sender["#{email_sender}_host"]
       port = Setting.plugin_redmine_multi_sender["#{email_sender}_port"]
       # if access_token.present?
       delivery_options = { user_name: user_name,
-                       password: access_token,
+                       password: smtp_api_access_token,
                        domain: domain,
                        address: host,
                        authentication: :xoauth2,
