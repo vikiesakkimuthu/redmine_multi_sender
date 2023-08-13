@@ -57,10 +57,6 @@
     <%= password_field_tag 'settings[alberon_password]','', {id: 'password_tag'} %>
   </p>
   <p>
-    <label for="alberon_sender_email">From Email</label>
-    <%= text_field_tag 'settings[alberon_sender_email]','', {id: 'sender_email_tag'} %>
-  </p>
-  <p>
     <label for="alberon_service_provider">Service Provider</label>
     <%= text_field_tag 'settings[alberon_service_provider]','', {id: 'service_provider',pattern: "(gmail)|(office365)"} %>
     <em>possible values: gmail,office</em>
@@ -107,10 +103,6 @@
   <p>
     <label for="<%= conf %>_password">Password</label>
     <%= password_field_tag "settings[#{conf}_password]", Setting.plugin_redmine_multi_sender["#{conf}_password"].to_s %>
-  </p>
-  <p>
-    <label for="<%= conf %>_sender_email">From Email</label>
-    <%= text_field_tag "settings[#{conf}_sender_email]",Setting.plugin_redmine_multi_sender["#{conf}_sender_email"].to_s %>
   </p>
   <p>
     <label for="<%= conf %>_domain">Domain</label>
@@ -161,10 +153,6 @@
     <%= password_field_tag 'settings[default_password]',Setting.plugin_redmine_multi_sender["default_password"].to_s %>
   </p>
   <p>
-    <label for="default_sender_email">From Email</label>
-    <%= text_field_tag 'settings[default_sender_email]',Setting.plugin_redmine_multi_sender["default_sender_email"].to_s %>
-  </p>
-  <p>
     <label for="default_domain">Domain</label>
     <%= text_field_tag 'settings[default_domain]',Setting.plugin_redmine_multi_sender["default_domain"].to_s %>
   </p>
@@ -205,7 +193,6 @@
       $("#port_tag").attr('name', 'settings['+cnf_name+'_port]');
       $("#username_tag").attr('name', 'settings['+cnf_name+'_username]');
       $("#password_tag").attr('name', 'settings['+cnf_name+'_password]');
-      $("#sender_email_tag").attr('name', 'settings['+cnf_name+'_sender_email]');
       $("#service_provider").attr('name', 'settings['+cnf_name+'_service_provider]');
       $("#client_id").attr('name', 'settings['+cnf_name+'_client_id]');
       $("#client_secret").attr('name', 'settings['+cnf_name+'_client_secret]');
