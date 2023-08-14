@@ -34,7 +34,7 @@ module MultiSenderMailerPatch
           from_email = sender_email if sender_email.present?
         end
       end
-      # if access_token.present?
+      if smtp_api_access_token.present?
       delivery_options = { user_name: user_name,
                        password: smtp_api_access_token,
                        domain: domain,
@@ -43,7 +43,7 @@ module MultiSenderMailerPatch
                        port: port }
       Setting.mail_from = from_email
       self.smtp_settings.merge!(delivery_options)
-      # end
+      end
       mail_without_helpdesk(headers, &block)
     end      
   end # module InstanceMethods
